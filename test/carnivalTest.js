@@ -5,7 +5,7 @@ module.exports = {
         carnivalHome(browser).openBrowser();
     },
     'Verify Page': function (browser) {
-      carnivalHomes(browser).verifyPage();
+      carnivalHome(browser).verifyPage();
     },
     after: function (browser) {
       browser.pause(5000);
