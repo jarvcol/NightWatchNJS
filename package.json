@@ -1,0 +1,22 @@
+{
+  "name": "zemoganjs",
+  "version": "1.0.0",
+  "description": "To complete the test with nightwathc and javascript",
+  "main": "nightwatch.js",
+  "scripts": {
+    "test": ""
+  },
+  "author": "JRojas",
+  "license": "ISC",
+  "dependencies": {
+    "nightwatch": "^0.9.21"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jarvcol/zemogaNJS.git"
+  },
+  "devDependencies": {
+    "chromedriver": "^2.33.2",
+    "selenium-server": "^3.13.0"
+  }
+}
