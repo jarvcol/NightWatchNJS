@@ -76,17 +76,40 @@ module.exports = function (browser) {
       .useCss()
       .click(".sfp-reset__button")
     };
-    this.assertSliderFunction = function(){
+    this.clickSortButton = function(){
+      browser
+      .useCss()
+      .click(".sbsc-container__sort-options")
+
+    };
+    this.assertSliderFunctionMin = function(){
       browser
       .useCss()
       .waitForElementVisible('.rz-pointer.rz-pointer-min', 5000)
       .getAttribute('.rz-pointer.rz-pointer-min','aria-valuenow', function(filterValue) {
         browser
-        .waitForElementVisible('p+.vrgf-price-box__price-info', 5000)
         .getText('p+.vrgf-price-box__price-info', function(articleValue) {
           console.log("filterValue "+filterValue.value.toString());
           console.log("articleValue "+JSON.stringify(articleValue.value).toString().replace(/\D/g, ""));
-          browser.assert.equal((JSON.stringify(articleValue.value).toString().replace(/\D/g, "") >= filterValue.value.toString()) ? true : false
+          browser
+          .waitForElementVisible('p+.vrgf-price-box__price-info', 5000)
+          .assert.equal((JSON.stringify(articleValue.value).toString().replace(/\D/g, "") >= filterValue.value.toString()) ? true : false
+          , true, 'Slider filter is not working properly');
+        });
+      });
+    };
+    this.assertSliderFunctionMax = function(){
+      browser
+      .useCss()
+      .waitForElementVisible('.rz-pointer.rz-pointer-max', 5000)
+      .getAttribute('.rz-pointer.rz-pointer-max','aria-valuenow', function(filterValue) {
+        browser
+        .getText('p+.vrgf-price-box__price-info', function(articleValue) {
+          console.log("filterValue "+filterValue.value.toString());
+          console.log("articleValue "+JSON.stringify(articleValue.value).toString().replace(/\D/g, ""));
+          browser
+          .waitForElementVisible('p+.vrgf-price-box__price-info', 5000)
+          .assert.equal((JSON.stringify(articleValue.value).toString().replace(/\D/g, "") <= filterValue.value.toString()) ? true : false
           , true, 'Slider filter is not working properly');
         });
       });
