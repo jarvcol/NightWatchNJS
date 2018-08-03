@@ -35,7 +35,7 @@ module.exports = function (browser) {
     this.assertGridView = function(){
       browser
       .useCss()
-      .assert.elementPresent("ccl-view-result-grid")
+      .assert.elementPresent("ccl-view-result-grid",'Page is not displaying the grid as default view')
     };
     this.clickPricingFilter = function(){
       browser
@@ -57,7 +57,7 @@ module.exports = function (browser) {
         cycle = cycle -1 ;
       };
     };
-    this.moveSliderMaxToRight = function(){
+    this.moveSliderMaxToLeft = function(){
       browser
       .useCss()
       .getAttribute('#sfn-nav-pricing','aria-expanded', function(result) {
@@ -74,7 +74,7 @@ module.exports = function (browser) {
     this.clickResetValues = function(){
       browser
       .useCss()
-      .assert.elementPresent(".sfp-reset__button")
+      .click(".sfp-reset__button")
     };
     this.assertSliderFunction = function(){
       browser
@@ -84,8 +84,10 @@ module.exports = function (browser) {
         browser
         .waitForElementVisible('p+.vrgf-price-box__price-info', 5000)
         .getText('p+.vrgf-price-box__price-info', function(articleValue) {
-          console.log("first "+filterValue.value.toString());
-          console.log("second "+JSON.stringify(articleValue.value));
+          console.log("filterValue "+filterValue.value.toString());
+          console.log("articleValue "+JSON.stringify(articleValue.value).toString().replace(/\D/g, ""));
+          browser.assert.equal((JSON.stringify(articleValue.value).toString().replace(/\D/g, "") >= filterValue.value.toString()) ? true : false
+          , true, 'Slider filter is not working properly');
         });
       });
     };
