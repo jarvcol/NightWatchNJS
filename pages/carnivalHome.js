@@ -35,7 +35,7 @@ module.exports = function (browser) {
     this.assertGridView = function(){
       browser
       .useCss()
-      .assert.elementPresent("ccl-view-result-grid",'Page is not displaying the grid as default view')
+      .assert.elementPresent("ccl-view-result-grid",'Page is not displaying the grid as default view');
     };
     this.clickPricingFilter = function(){
       browser
@@ -50,10 +50,12 @@ module.exports = function (browser) {
         if (result.value.toString() == 'false')
           clickPricingFilter();
       });
-      var cycle = 20;
+      var cycle = 15;
       while(cycle != 0){
         browser.setValue('.rz-pointer.rz-pointer-min', browser.Keys.RIGHT_ARROW)
-        .waitForElementVisible('article', 5000);
+        .waitForElementVisible('.rz-pointer.rz-pointer-min', 5000)
+        .waitForElementVisible('article', 5000)
+        .waitForElementVisible('.sbsc-container__result-count', 5000);
         cycle = cycle -1 ;
       };
     };
@@ -64,36 +66,40 @@ module.exports = function (browser) {
         if (result.value.toString() == 'false')
           clickPricingFilter();
       });
-      var cycle = 20;
+      var cycle = 15;
       while(cycle != 0){
         browser.setValue('.rz-pointer.rz-pointer-max', browser.Keys.LEFT_ARROW)
-        .waitForElementVisible('article', 5000);
+        .waitForElementVisible('.rz-pointer.rz-pointer-max', 5000)
+        .waitForElementVisible('article', 5000)
+        .waitForElementVisible('.sbsc-container__result-count', 5000);
         cycle = cycle -1 ;
       };
     };
     this.clickResetValues = function(){
       browser
       .useCss()
-      .click(".sfp-reset__button")
+      .click(".sfp-reset__button");
+      console.log('Default slider values');
     };
     this.clickSortButton = function(){
       browser
       .useCss()
-      .click(".sbsc-container__sort-options")
-
+      .click(".sbsc-container__sort-options");
+      console.log('Pressing sort button');
     };
     this.assertSliderFunctionMin = function(){
       browser
       .useCss()
+      .waitForElementVisible('article', 5000)
       .waitForElementVisible('.rz-pointer.rz-pointer-min', 5000)
       .getAttribute('.rz-pointer.rz-pointer-min','aria-valuenow', function(filterValue) {
         browser
         .getText('p+.vrgf-price-box__price-info', function(articleValue) {
-          console.log("filterValue "+filterValue.value.toString());
-          console.log("articleValue "+JSON.stringify(articleValue.value).toString().replace(/\D/g, ""));
+          console.log('AssertSliderFunctionMin');
+          console.log('filterValue.value '+filterValue.value.toString());
+          console.log('articleValue.value '+JSON.stringify(articleValue.value).toString().replace(/\D/g, ""));
           browser
-          .waitForElementVisible('p+.vrgf-price-box__price-info', 5000)
-          .assert.equal((JSON.stringify(articleValue.value).toString().replace(/\D/g, "") >= filterValue.value.toString()) ? true : false
+          .assert.equal((parseInt(JSON.stringify(articleValue.value).toString().replace(/\D/g, "")) >= parseInt(filterValue.value.toString())) ? true : false
           , true, 'Slider filter is not working properly');
         });
       });
@@ -101,16 +107,55 @@ module.exports = function (browser) {
     this.assertSliderFunctionMax = function(){
       browser
       .useCss()
+      .waitForElementVisible('article', 5000)
       .waitForElementVisible('.rz-pointer.rz-pointer-max', 5000)
       .getAttribute('.rz-pointer.rz-pointer-max','aria-valuenow', function(filterValue) {
         browser
         .getText('p+.vrgf-price-box__price-info', function(articleValue) {
-          console.log("filterValue "+filterValue.value.toString());
-          console.log("articleValue "+JSON.stringify(articleValue.value).toString().replace(/\D/g, ""));
+          console.log('AssertSliderFunctionMax');
+          console.log('filterValue.value '+filterValue.value.toString());
+          console.log('articleValue.value '+JSON.stringify(articleValue.value).toString().replace(/\D/g, ""));
           browser
-          .waitForElementVisible('p+.vrgf-price-box__price-info', 5000)
-          .assert.equal((JSON.stringify(articleValue.value).toString().replace(/\D/g, "") <= filterValue.value.toString()) ? true : false
+          .assert.equal((parseInt(JSON.stringify(articleValue.value).toString().replace(/\D/g, "")) <= parseInt(filterValue.value.toString())) ? true : false
           , true, 'Slider filter is not working properly');
+        });
+      });
+    };
+    this.assertSortOrderMinToMax = function(){
+      browser
+      .useCss()
+      .waitForElementVisible('p+.vrgf-price-box__price-info', 5000)
+      .elements('css selector','p+.vrgf-price-box__price-info', function(articleList){
+        browser
+        .getText('p+.vrgf-price-box__price-info', function(firstValue) {
+          browser
+          .useXpath()
+          .getText("//article["+articleList.value.length+"]//p[@class='vrgf-price-box__price-info']", function(lastValue) {
+            console.log('Lista Min to Max '+articleList.value.length);
+            console.log('Primero '+JSON.stringify(firstValue.value).toString().replace(/\D/g, ""));
+            console.log('Ultimo '+JSON.stringify(lastValue.value).toString().replace(/\D/g, ""));
+            browser.assert.equal((parseInt(JSON.stringify(firstValue.value).toString().replace(/\D/g, "")) <= parseInt(JSON.stringify(lastValue.value).toString().replace(/\D/g, ""))) ? true : false
+            , true, 'Order is not Min to Max');
+          }); 
+        });
+      });
+    };
+    this.assertSortOrderMaxToMin= function(){
+      browser
+      .useCss()
+      .waitForElementVisible('p+.vrgf-price-box__price-info', 5000)
+      .elements('css selector','p+.vrgf-price-box__price-info', function(articleList){
+        browser
+        .getText('p+.vrgf-price-box__price-info', function(firstValue) {
+          browser
+          .useXpath()
+          .getText("//article["+articleList.value.length+"]//p[@class='vrgf-price-box__price-info']", function(lastValue) {
+            console.log('Lista Max to Min '+articleList.value.length);
+            console.log('Primero '+JSON.stringify(firstValue.value).toString().replace(/\D/g, ""));
+            console.log('Ultimo '+JSON.stringify(lastValue.value).toString().replace(/\D/g, ""));
+            browser.assert.equal((parseInt(JSON.stringify(firstValue.value).toString().replace(/\D/g, "")) >= parseInt(JSON.stringify(lastValue.value).toString().replace(/\D/g, ""))) ? true : false
+            , true, 'Order is not Max to Min');
+          }); 
         });
       });
     };
