@@ -7,3 +7,5 @@ To execute this code just run "node nightwatch -e chrome -a carnival" on a termi
 To create the project I used Visual Studio Code, node v10.1.0, nightwatch v0.9.21, ChromeDriver 2.41 and selenium-server-standalone-3.13.0.jar
 
 Please refer to nightwatch.json if needed to change some of the project settings
+
+This project has a lot of improvement opportunities but it is my first time with JS and nightwatchjs.
