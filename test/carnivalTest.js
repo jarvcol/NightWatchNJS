@@ -27,6 +27,7 @@ module.exports = {
     },
     'Move min value slider': function (browser) {
       carnivalHome(browser).moveSliderMinToRight();
+      browser.pause(2000);
     },
     'Assert slider function min': function (browser) {
       carnivalHome(browser).assertSliderFunctionMin();
@@ -39,12 +40,14 @@ module.exports = {
       //so can assert the order and perform
       //easily the slider max value filter
       carnivalHome(browser).clickSortButton();
+      browser.pause(2000);
     },
     'Assert Max to Min': function (browser) {
       carnivalHome(browser).assertSortOrderMaxToMin();
     },
     'Move max value slider': function (browser) {
       carnivalHome(browser).moveSliderMaxToLeft();
+      browser.pause(2000);
     },
     'Assert slider function max': function (browser) {
       carnivalHome(browser).assertSliderFunctionMax();
