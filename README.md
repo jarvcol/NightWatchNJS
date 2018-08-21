@@ -1,4 +1,4 @@
-# zemogaNJS
+# NJS
 
 Hi, please check the video (quicktime) on /video to see it running.
 
